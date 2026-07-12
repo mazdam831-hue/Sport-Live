@@ -1,0 +1,306 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   SPORTLIVE — Design System "Stade nocturne"
+   ------------------------------------------------------------
+   Layered tokens:
+   - Base palette (dark stadium / light editorial)
+   - Per-sport accent colors (foot, basket, tennis, F1…)
+   - Theme switcher: [data-theme="dark"|"light"|"stadium"]
+   - Ambient bg switcher: [data-bg="default"|"stadium"|"court"|"clay"]
+   ============================================================ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 6px);
+  --radius-2xl: calc(var(--radius) + 12px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-2: var(--card-2);
+  --color-popover: var(--card);
+  --color-popover-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--card-2);
+  --color-secondary-foreground: var(--foreground);
+  --color-muted: var(--card-2);
+  --color-muted-foreground: var(--muted-fg);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-fg);
+  --color-destructive: var(--copper);
+  --color-destructive-foreground: #fff;
+  --color-border: var(--border-c);
+  --color-input: var(--border-c);
+  --color-ring: var(--accent);
+
+  --color-live: var(--live);
+  --color-live-dim: var(--live-dim);
+  --color-live-brd: var(--live-brd);
+  --color-turf: var(--turf);
+  --color-turf-2: var(--turf-2);
+  --color-amber-brand: var(--amber);
+  --color-copper: var(--copper);
+  --color-mid: var(--mid);
+  --color-muted-2: var(--muted-2);
+
+  /* Per-sport accents (Tailwind classes: text-sport-foot, bg-sport-basket, etc.) */
+  --color-sport-foot: var(--sport-foot);
+  --color-sport-basket: var(--sport-basket);
+  --color-sport-tennis: var(--sport-tennis);
+  --color-sport-f1: var(--sport-f1);
+  --color-sport-rugby: var(--sport-rugby);
+  --color-sport-cyclisme: var(--sport-cyclisme);
+  --color-sport-motogp: var(--sport-motogp);
+  --color-sport-handball: var(--sport-handball);
+  --color-sport-mma: var(--sport-mma);
+  --color-sport-athletisme: var(--sport-athletisme);
+  --color-sport-golf: var(--sport-golf);
+  --color-sport-volley: var(--sport-volley);
+
+  --font-display: "Big Shoulders Display", Impact, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+
+  --shadow-glow-live: 0 0 0 1px color-mix(in oklab, var(--live) 30%, transparent),
+                      0 8px 30px -8px color-mix(in oklab, var(--live) 45%, transparent);
+  --shadow-card: 0 1px 0 0 rgba(255,255,255,0.02) inset,
+                 0 20px 40px -18px rgba(0,0,0,0.55);
+}
+
+:root,
+html[data-theme="dark"] {
+  --radius: 6px;
+
+  --live: #22E27A;
+  --live-dim: rgba(34,226,122,.10);
+  --live-brd: rgba(34,226,122,.32);
+  --turf: #1E5B3D;
+  --turf-2: #3E8F63;
+  --amber: #F5B84A;
+  --copper: #E86B3A;
+
+  --background: #06090A;
+  --mid: #0B1013;
+  --card: #101619;
+  --card-2: #171F23;
+  --border-c: #1F2A2E;
+  --foreground: #ECF2EE;
+  --muted-fg: #6A7B76;
+  --muted-2: #98A6A0;
+
+  --primary: #EAF6EE;
+  --primary-foreground: #06090A;
+  --accent: #22E27A;
+  --accent-fg: #04140B;
+
+  /* Sport accents — dark theme */
+  --sport-foot:       #22E27A;  /* émeraude */
+  --sport-basket:     #FF7A2A;  /* orange */
+  --sport-tennis:     #D6F24A;  /* jaune-vert */
+  --sport-f1:         #FF3B57;  /* rouge écurie */
+  --sport-rugby:      #6EA9FF;  /* bleu */
+  --sport-cyclisme:   #FFD24A;  /* jaune maillot */
+  --sport-motogp:     #4AC7FF;  /* cyan */
+  --sport-handball:   #C084FC;  /* violet */
+  --sport-mma:        #FF4D6D;  /* rouge sang */
+  --sport-athletisme: #FF9E3D;  /* orange piste */
+  --sport-golf:       #8BC34A;  /* vert olive */
+  --sport-volley:     #29B6F6;  /* bleu ciel */
+}
+
+html[data-theme="stadium"] {
+  --background: #030706;
+  --mid: #08110D;
+  --card: #0C1712;
+  --card-2: #12211A;
+  --border-c: #1F3628;
+  --foreground: #F1FBF4;
+  --muted-fg: #708D7C;
+  --muted-2: #A7BFB1;
+  --primary: #F1FBF4;
+  --primary-foreground: #030706;
+  --accent: #22E27A;
+  --accent-fg: #04140B;
+  --live-dim: rgba(34,226,122,.14);
+  --live-brd: rgba(34,226,122,.42);
+}
+
+html[data-theme="light"] {
+  --background: #F5F6F3;
+  --mid: #FFFFFF;
+  --card: #FFFFFF;
+  --card-2: #ECEFEA;
+  --border-c: #D8DFD8;
+  --foreground: #0B120E;
+  --muted-fg: #6A756E;
+  --muted-2: #414A45;
+  --primary: #0B120E;
+  --primary-foreground: #F5F6F3;
+  --accent: #0E9A54;
+  --accent-fg: #FFFFFF;
+  --live: #0E9A54;
+  --live-dim: rgba(14,154,84,.10);
+  --live-brd: rgba(14,154,84,.35);
+  --turf: #0E9A54;
+  --turf-2: #35B577;
+  --sport-foot:       #0E9A54;
+  --sport-basket:     #E5591E;
+  --sport-tennis:     #7CB300;
+  --sport-f1:         #D62839;
+  --sport-rugby:      #2B6BD6;
+  --sport-cyclisme:   #E0A400;
+  --sport-motogp:     #0E86C2;
+  --sport-handball:   #7A3FCB;
+  --sport-mma:        #C81C3C;
+  --sport-athletisme: #DC7A20;
+  --sport-golf:       #6B9F2E;
+  --sport-volley:     #0E86C2;
+}
+
+/* ===== Ambient background layers (page-wide) ===== */
+body[data-bg="default"] {
+  background:
+    radial-gradient(ellipse 90% 60% at 20% -10%, color-mix(in oklab, var(--accent) 6%, transparent), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, color-mix(in oklab, var(--amber) 4%, transparent), transparent 60%),
+    var(--color-background);
+}
+body[data-bg="stadium"] {
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--color-background) 82%, transparent) 0%, var(--color-background) 70%),
+    url("/backgrounds/stadium.jpg") center/cover fixed no-repeat,
+    var(--color-background);
+}
+body[data-bg="court"] {
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--color-background) 88%, transparent) 0%, var(--color-background) 70%),
+    url("/backgrounds/court.jpg") center/cover fixed no-repeat,
+    var(--color-background);
+}
+body[data-bg="clay"] {
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--color-background) 85%, transparent) 0%, var(--color-background) 70%),
+    url("/backgrounds/clay.jpg") center/cover fixed no-repeat,
+    var(--color-background);
+}
+
+@utility scanlines {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .35;
+    background-image: repeating-linear-gradient(rgba(236,242,238,.02) 0 1px, transparent 1px 3px);
+  }
+}
+@utility tabnum {
+  font-variant-numeric: tabular-nums;
+}
+@utility hover-lift {
+  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px -20px rgba(0,0,0,.55);
+  }
+}
+@utility card-elevated {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+}
+@utility text-gradient-live {
+  background-image: linear-gradient(120deg, var(--accent), var(--amber));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@utility live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 3px;
+  background: var(--live-dim);
+  border: 1px solid var(--live-brd);
+  color: var(--live);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  &::before {
+    content: "";
+    width: 6px; height: 6px; border-radius: 999px;
+    background: var(--live);
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--live) 60%, transparent);
+    animation: live-pulse 1.5s cubic-bezier(.4,0,.6,1) infinite;
+  }
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html { scroll-behavior: smooth; }
+  body {
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    min-height: 100vh;
+  }
+  ::selection { background: var(--accent); color: var(--accent-fg); }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: color-mix(in oklab, var(--accent) 30%, var(--color-border)); }
+  ::-webkit-scrollbar-track { background: transparent; }
+}
+
+/* ===== Animations ===== */
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes live-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--live) 60%, transparent); opacity: 1; }
+  50% { box-shadow: 0 0 0 8px color-mix(in oklab, var(--live) 0%, transparent); opacity: .7; }
+}
+@keyframes blink-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .2; }
+}
+@keyframes fade-up {
+  0% { opacity: 0; transform: translateY(14px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.animate-fade-up { animation: fade-up .55s ease-out both; }
+.animate-fade-up-1 { animation: fade-up .55s ease-out .08s both; }
+.animate-fade-up-2 { animation: fade-up .55s ease-out .16s both; }
+.animate-fade-up-3 { animation: fade-up .55s ease-out .24s both; }
+.animate-fade-up-4 { animation: fade-up .55s ease-out .32s both; }
+.animate-fade-in { animation: fade-in .5s ease-out both; }
+
+.skeleton {
+  background: linear-gradient(90deg,
+    var(--color-card-2) 0%,
+    color-mix(in oklab, var(--color-card-2) 60%, var(--color-border)) 50%,
+    var(--color-card-2) 100%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: 4px;
+}
