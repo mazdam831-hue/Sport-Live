@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Bloquer les pages sans valeur SEO
+Disallow: /auth
+Disallow: /alertes
+
+Sitemap: https://sportlive.app/sitemap.xml
