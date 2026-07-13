@@ -111,7 +111,7 @@ function HomePage() {
             {liveLoading ? (
               <ScoreboardSkeleton />
             ) : (
-              <Scoreboard matches={liveMatches.slice(0, 5)} updatedAt={new Date()} />
+              <Scoreboard matches={liveMatches.slice(0, 5)} updatedAt={new Date()} key={liveMatches.length} />
             )}
           </div>
         </div>
@@ -148,7 +148,7 @@ function HomePage() {
             {liveLoading ? (
               <ScoreboardSkeleton />
             ) : (
-              <Scoreboard matches={liveMatches.slice(0, 5)} updatedAt={new Date()} />
+              <Scoreboard matches={liveMatches.slice(0, 5)} updatedAt={new Date()} key={liveMatches.length} />
             )}
           </div>
           <div className="card-elevated rounded-md overflow-hidden">
