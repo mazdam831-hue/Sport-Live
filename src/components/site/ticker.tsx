@@ -1,10 +1,14 @@
 import { useLiveMatches, useAlertsWatcher } from "@/hooks/use-sports-data";
+import { useAlertes } from "@/hooks/use-alertes";
 import { TICKER } from "@/data/mock";
 import { abbreviateTeam } from "@/lib/team-abbreviations";
 
 export function Ticker() {
   const { data: live } = useLiveMatches();
-  useAlertsWatcher(live);
+  const { alertes, isSignedIn } = useAlertes();
+  // Connecté : on passe les alertes Supabase (le localStorage est vidé après migration).
+  // Invité : on laisse useAlertsWatcher lire le localStorage lui-même.
+  useAlertsWatcher(live, isSignedIn ? alertes : undefined);
 
   const items =
     live.length > 0
