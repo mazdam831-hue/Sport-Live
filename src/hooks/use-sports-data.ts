@@ -3,9 +3,18 @@ import { useEffect, useRef } from "react";
 import { getLiveMatches, getUpcomingMatches, getFinishedMatches, getSportsNews } from "@/lib/sportsdb.functions";
 import { LIVE_MATCHES, UPCOMING, FINISHED, ARTICLES, type Article, type Match } from "@/data/mock";
 
-const LIVE_REFRESH_MS = 30_000;
-const DAY_REFRESH_MS = 5 * 60_000;
-const NEWS_REFRESH_MS = 5 * 60_000;
+const LIVE_REFRESH_MS  = 30_000;
+const DAY_REFRESH_MS   = 5 * 60_000;
+const NEWS_REFRESH_MS  = 5 * 60_000;
+
+// Ne rafraîchit que si l'onglet est visible — économise des requêtes inutiles
+// quand l'utilisateur a SportLive ouvert en arrière-plan.
+const baseOpts = {
+  refetchIntervalInBackground: false,
+  refetchOnWindowFocus: true,   // re-fetch dès que l'utilisateur revient sur l'onglet
+  refetchOnReconnect: true,     // re-fetch automatiquement après une coupure réseau
+  retry: 1,                     // 1 seul retry (au lieu de 3 par défaut) — le fallback mock prend le relais
+} as const;
 
 export function useLiveMatches() {
   const q = useQuery<Match[]>({
@@ -13,6 +22,7 @@ export function useLiveMatches() {
     queryFn: () => getLiveMatches(),
     refetchInterval: LIVE_REFRESH_MS,
     staleTime: LIVE_REFRESH_MS / 2,
+    ...baseOpts,
   });
   const data = q.data && q.data.length > 0 ? q.data : LIVE_MATCHES;
   return { ...q, data, isFallback: !q.data || q.data.length === 0 };
@@ -24,6 +34,7 @@ export function useUpcomingMatches() {
     queryFn: () => getUpcomingMatches(),
     refetchInterval: DAY_REFRESH_MS,
     staleTime: DAY_REFRESH_MS / 2,
+    ...baseOpts,
   });
   const data = q.data && q.data.length > 0 ? q.data : UPCOMING;
   return { ...q, data, isFallback: !q.data || q.data.length === 0 };
@@ -35,6 +46,7 @@ export function useFinishedMatches() {
     queryFn: () => getFinishedMatches(),
     refetchInterval: DAY_REFRESH_MS,
     staleTime: DAY_REFRESH_MS / 2,
+    ...baseOpts,
   });
   const data = q.data && q.data.length > 0 ? q.data : FINISHED;
   return { ...q, data, isFallback: !q.data || q.data.length === 0 };
@@ -46,6 +58,7 @@ export function useSportsNews() {
     queryFn: () => getSportsNews(),
     refetchInterval: NEWS_REFRESH_MS,
     staleTime: NEWS_REFRESH_MS / 2,
+    ...baseOpts,
   });
   const data = q.data && q.data.length > 0 ? q.data : ARTICLES;
   return { ...q, data, isFallback: !q.data || q.data.length === 0 };
@@ -85,9 +98,25 @@ function matchesSub(sub: string, m: Match) {
  */
 export function useAlertsWatcher(live: Match[], subs?: Sub[]) {
   const lastScores = useRef<Map<string, string>>(new Map());
+  // "seeded" : premier chargement = on mémorise sans notifier,
+  // pour éviter une fausse notification au refresh de page.
+  const seeded = useRef(false);
+
   useEffect(() => {
     if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
     const activeSubs = subs ?? readLocalSubs();
+
+    // Premier passage : initialise la map de référence sans déclencher d'alerte
+    if (!seeded.current) {
+      for (const m of live) {
+        if (m.score) {
+          lastScores.current.set(`${m.home}|${m.away}|${m.league}`, m.score);
+        }
+      }
+      seeded.current = true;
+      return;
+    }
+
     if (activeSubs.length === 0) return;
     for (const m of live) {
       if (!m.score) continue;

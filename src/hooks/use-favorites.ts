@@ -73,21 +73,31 @@ export function useFavorites() {
       const next = isFav
         ? favorites.filter((s) => s !== sportSlug)
         : [...favorites, sportSlug];
+      // Optimiste : UI mise à jour immédiatement
       setFavorites(next);
       if (!user) {
         writeLocal(next);
         return;
       }
+      // Rollback si l'opération Supabase échoue
       if (isFav) {
-        await supabase
+        const { error } = await supabase
           .from("favorites")
           .delete()
           .eq("user_id", user.id)
           .eq("sport_slug", sportSlug);
+        if (error) {
+          console.error("favorites delete", error);
+          setFavorites(favorites); // rollback
+        }
       } else {
-        await supabase
+        const { error } = await supabase
           .from("favorites")
           .insert({ user_id: user.id, sport_slug: sportSlug });
+        if (error) {
+          console.error("favorites insert", error);
+          setFavorites(favorites); // rollback
+        }
       }
     },
     [favorites, user],
