@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Bell, LogIn, LogOut, Moon, Palette, Sun, Trophy, User as UserIcon } from "lucide-react";
 import { useTheme, type Theme, type Bg } from "./theme-provider";
 import { useAuth } from "@/hooks/use-auth";
-import { AuthModal } from "./auth-modal";
 
 function useClock() {
   const [now, setNow] = useState<Date | null>(null);
@@ -31,6 +30,7 @@ export function Topbar() {
   const now = useClock();
   const { theme, bg, cycleTheme, setBg } = useTheme();
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const [subs, setSubs] = useState(0);
   const [menu, setMenu] = useState<null | "bg" | "user">(null);
 
@@ -160,14 +160,15 @@ export function Topbar() {
                   <div className="px-2 py-1.5 text-[11px] text-muted-2">
                     Connectez-vous pour synchroniser vos alertes sur tous vos appareils.
                   </div>
-                  <AuthModal>
-                    <button
-                      onClick={() => setMenu(null)}
-                      className="mt-1 w-full px-2.5 py-2 text-[11px] font-bold bg-accent text-accent-foreground rounded-sm inline-flex items-center justify-center gap-2 hover:opacity-90"
-                    >
-                      <LogIn className="w-3.5 h-3.5" /> Se connecter
-                    </button>
-                  </AuthModal>
+                  <button
+                    onClick={() => {
+                      navigate({ to: "/auth" });
+                      setMenu(null);
+                    }}
+                    className="mt-1 w-full px-2.5 py-2 text-[11px] font-bold bg-accent text-accent-foreground rounded-sm inline-flex items-center justify-center gap-2 hover:opacity-90"
+                  >
+                    <LogIn className="w-3.5 h-3.5" /> Se connecter
+                  </button>
                 </>
               )}
             </div>

@@ -16,8 +16,7 @@ export function ArticleCard({ a }: { a: Article }) {
       <div className="relative w-[110px] h-[78px] rounded-sm overflow-hidden shrink-0 bg-card-2">
         <img
           src={meta.img}
-          // Point 7 : alt décrit le contenu de l'article
-          alt={`Actualité ${meta.label} — ${a.title}`}
+          alt={meta.label}
           loading="lazy"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
@@ -68,8 +67,7 @@ export function ArticleFeatured({ a }: { a: Article }) {
       <div className="relative h-[240px] overflow-hidden">
         <img
           src={meta.img}
-          // Point 7 : alt complet avec titre de l'article
-          alt={`${meta.label} — ${a.title}`}
+          alt={meta.label}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
@@ -125,6 +123,7 @@ const STREAM_BADGE = {
  * ============================================================ */
 export function StreamCard({ s }: { s: Stream }) {
   const b = STREAM_BADGE[s.type];
+  // resolve the best-matching sport from the stream's sports/name string
   const meta = sportMeta(`${s.sports} ${s.name} ${s.icon}`);
   return (
     <a
@@ -136,8 +135,7 @@ export function StreamCard({ s }: { s: Stream }) {
       <div className="relative h-[120px] overflow-hidden">
         <img
           src={meta.img}
-          // Point 7 : alt décrit la plateforme de streaming et ses sports
-          alt={`Regarder ${meta.label} sur ${s.name}`}
+          alt={meta.label}
           loading="lazy"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
@@ -176,8 +174,7 @@ export function HoraireCard({ h }: { h: Horaire }) {
       <div className="relative h-[90px] overflow-hidden">
         <img
           src={meta.img}
-          // Point 7 : alt décrit le sport du programme
-          alt={`Programme ${h.title} — horaires et diffusion`}
+          alt={meta.label}
           loading="lazy"
           className="w-full h-full object-cover opacity-70"
         />
@@ -234,8 +231,7 @@ export function SportCard({ s }: { s: Sport }) {
       <div className="relative h-[170px] overflow-hidden">
         <img
           src={meta.img}
-          // Point 7 : alt inclut le nom complet du sport
-          alt={`${s.name} en direct — scores et actualités SportLive`}
+          alt={meta.label}
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />

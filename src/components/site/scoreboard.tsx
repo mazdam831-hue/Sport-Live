@@ -2,7 +2,6 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, RefreshCw } from "lucide-react";
 import type { Match } from "@/data/mock";
 import { sportMeta } from "@/lib/sport-images";
-import { abbreviateTeam } from "@/lib/team-abbreviations"; // Point 5
 
 export function ScoreboardSkeleton({ rows = 5 }: { rows?: number }) {
   return (
@@ -57,9 +56,6 @@ export function Scoreboard({
           const isLive = m.status === "live";
           const isDone = m.status === "done";
           const meta = sportMeta(`${m.league} ${m.icon}`);
-          // Point 5 : abréger les noms longs pour l'affichage compact
-          const home = abbreviateTeam(m.home);
-          const away = abbreviateTeam(m.away);
           return (
             <div
               key={i}
@@ -68,8 +64,7 @@ export function Scoreboard({
               <div className="relative w-8 h-8 rounded-full overflow-hidden ring-1 ring-border shrink-0">
                 <img
                   src={meta.img}
-                  // Point 7 : alt décrit le contexte réel du match
-                  alt={`${m.league} — ${m.home} vs ${m.away}`}
+                  alt={meta.label}
                   loading="lazy"
                   className="w-full h-full object-cover"
                 />
@@ -80,9 +75,9 @@ export function Scoreboard({
               </div>
               <div className="min-w-0">
                 <div className="text-[13px] font-bold tracking-tight leading-tight truncate flex items-center gap-2">
-                  <span className="truncate" title={m.home}>{home}</span>
+                  <span className="truncate">{m.home}</span>
                   <span className="text-muted-fg font-mono text-[10px]">vs</span>
-                  <span className="truncate" title={m.away}>{away}</span>
+                  <span className="truncate">{m.away}</span>
                 </div>
                 <div className="text-[10px] text-muted-fg mt-0.5 font-mono uppercase tracking-wider truncate">
                   {m.league}
