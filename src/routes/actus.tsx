@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { PageHead } from "@/components/site/page-head";
 import { ArticleCard, ArticleFeatured } from "@/components/site/cards";
+import { SyncStatus } from "@/components/site/sync-status";
 import { useSportsNews } from "@/hooks/use-sports-data";
 
 export const Route = createFileRoute("/actus")({
@@ -21,7 +22,8 @@ const CATS = ["all", "football", "tennis", "basket", "f1", "cyclisme", "rugby", 
 function ActusPage() {
   const [cat, setCat] = useState("all");
   const [q, setQ] = useState("");
-  const { data: articles, isFetching } = useSportsNews();
+  const news = useSportsNews();
+  const { data: articles, isFetching, isError, isFallback, dataUpdatedAt, refetch } = news;
 
   const filtered = useMemo(
     () =>
@@ -45,20 +47,30 @@ function ActusPage() {
         crumbs={[{ label: "Accueil", to: "/" }, { label: "Actualités" }]}
       />
       <section className="max-w-[1320px] mx-auto px-[5vw] py-8">
-        <div className="flex gap-1.5 flex-wrap mb-4">
-          {CATS.map((c) => (
-            <button
-              key={c}
-              onClick={() => setCat(c)}
-              className={`px-3.5 py-1.5 rounded-sm text-[11px] font-bold border transition-all uppercase tracking-wider ${
-                cat === c
-                  ? "bg-turf border-live-brd text-[#EAF6EE]"
-                  : "border-border text-muted-2 hover:border-[#2A362E] hover:text-foreground"
-              }`}
-            >
-              {c === "all" ? "Tous" : c}
-            </button>
-          ))}
+        <div className="flex items-center justify-between gap-3 flex-wrap mb-4">
+          <div className="flex gap-1.5 flex-wrap">
+            {CATS.map((c) => (
+              <button
+                key={c}
+                onClick={() => setCat(c)}
+                className={`px-3.5 py-1.5 rounded-sm text-[11px] font-bold border transition-all uppercase tracking-wider ${
+                  cat === c
+                    ? "bg-turf border-live-brd text-[#EAF6EE]"
+                    : "border-border text-muted-2 hover:border-[#2A362E] hover:text-foreground"
+                }`}
+              >
+                {c === "all" ? "Tous" : c}
+              </button>
+            ))}
+          </div>
+          <SyncStatus
+            isFetching={isFetching}
+            isError={!!isError}
+            isFallback={isFallback}
+            updatedAt={dataUpdatedAt}
+            source="Google News RSS"
+            onRetry={() => refetch()}
+          />
         </div>
         <input
           value={q}

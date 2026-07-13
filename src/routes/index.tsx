@@ -10,6 +10,7 @@ import {
 } from "@/components/site/cards";
 import { SPORTS, STREAMS } from "@/data/mock";
 import { useLiveMatches, useSportsNews } from "@/hooks/use-sports-data";
+import { SyncStatus } from "@/components/site/sync-status";
 import { useFavorites } from "@/hooks/use-favorites";
 import heroBg from "@/assets/hero-stadium.jpg";
 
