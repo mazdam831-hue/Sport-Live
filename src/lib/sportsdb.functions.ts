@@ -1,5 +1,5 @@
-import { createServerFn } from "@tanstack/react-start";
 import type { Match, Article } from "@/data/mock";
+import { createServerFn } from "@tanstack/react-start";
 
 // ── Clé & base URL TheSportsDB ────────────────────────────────────────────────
 const TSDB_KEY =
