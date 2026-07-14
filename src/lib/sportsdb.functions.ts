@@ -239,7 +239,13 @@ function normName(s: string) {
 }
 
 async function fetchAFLive(): Promise<AFFixture[]> {
-  const key = process.env.API_FOOTBALL_KEY;
+  const key =
+  process.env.API_FOOTBALL_KEY ||
+  process.env.VITE_API_FOOTBALL_KEY ||
+  process.env.API_SPORTS_KEY ||
+  (typeof import.meta !== "undefined"
+    ? (import.meta.env as Record<string, string>).VITE_API_FOOTBALL_KEY
+    : undefined);
   if (!key) return [];
   try {
     const res  = await fetchWithRetry(`${AF}/fixtures?live=all`, { headers: { "x-apisports-key": key } }, { retries: 2, timeoutMs: 6000 });
