@@ -20,13 +20,24 @@ const ESPN_ENDPOINTS: { url: string; sport: string; icon: string }[] = [
 ];
 
 // ── Flux RSS d'actualités ─────────────────────────────────────────────────────
-const NEWS_FEEDS: { url: string; source: string }[] = [
-  { url: "https://news.google.com/rss/search?q=sport+when:1d&hl=fr&gl=FR&ceid=FR:fr", source: "Google News" },
-  { url: "https://www.lequipe.fr/rss/actu_rss.xml",                                    source: "L'Équipe" },
-  { url: "https://rmcsport.bfmtv.com/rss/infos/",                                      source: "RMC Sport" },
-  { url: "https://www.eurosport.fr/rss.xml",                                            source: "Eurosport" },
+const NEWS_FEEDS = [
+  {
+    source: "Google News Football",
+    url: "https://news.google.com/rss/search?q=football&hl=fr&gl=FR&ceid=FR:fr",
+  },
+  {
+    source: "Google News Basketball",
+    url: "https://news.google.com/rss/search?q=nba&hl=fr&gl=FR&ceid=FR:fr",
+  },
+  {
+    source: "Google News Tennis",
+    url: "https://news.google.com/rss/search?q=tennis&hl=fr&gl=FR&ceid=FR:fr",
+  },
+  {
+    source: "Google News Formule 1",
+    url: "https://news.google.com/rss/search?q=formule+1&hl=fr&gl=FR&ceid=FR:fr",
+  },
 ];
-
 const SPORT_META: Record<string, { icon: string }> = {
   Soccer:             { icon: "⚽" },
   Basketball:         { icon: "🏀" },
